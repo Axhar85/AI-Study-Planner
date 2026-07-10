@@ -5,9 +5,17 @@ const getSubjects = (req, res) => {
 };
 
 const createSubject = (req, res) => {
+  const subjectName = req.body.name;
+
+  if (!subjectName || subjectName.trim() === "") {
+    return res.status(400).json({
+      message: "Subject name is required",
+    });
+  }
+
   const newSubject = {
     id: Date.now(),
-    name: req.body.name,
+    name: subjectName,
     tasks: [],
   };
 
@@ -26,9 +34,17 @@ const createTask = (req, res) => {
     });
   }
 
+  const taskTitle = req.body.title;
+
+  if (!taskTitle || taskTitle.trim() === "") {
+    return res.status(400).json({
+      message: "Task title is required",
+    });
+  }
+
   const newTask = {
     id: Date.now(),
-    title: req.body.title,
+    title: taskTitle,
     completed: false,
   };
 
@@ -40,6 +56,13 @@ const createTask = (req, res) => {
 const updateTask = (req, res) => {
   const subjectId = Number(req.params.subjectId);
   const taskId = Number(req.params.taskId);
+  const completed = req.body.completed;
+
+  if (typeof completed !== "boolean") {
+    return res.status(400).json({
+      message: "Completed must be true or false",
+    });
+  }
 
   const subject = subjects.find((item) => item.id === subjectId);
 
@@ -57,7 +80,7 @@ const updateTask = (req, res) => {
     });
   }
 
-  task.completed = req.body.completed;
+  task.completed = completed;
 
   res.json(task);
 };
