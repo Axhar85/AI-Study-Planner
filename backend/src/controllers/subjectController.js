@@ -1,4 +1,4 @@
-const subjects = require("../data/subjects");
+const { subjects, saveSubjects } = require("../data/subjects");
 
 const getSubjects = (req, res) => {
   res.json(subjects);
@@ -20,6 +20,7 @@ const createSubject = (req, res) => {
   };
 
   subjects.push(newSubject);
+  saveSubjects();
 
   res.status(201).json(newSubject);
 };
@@ -49,6 +50,7 @@ const createTask = (req, res) => {
   };
 
   subject.tasks.push(newTask);
+  saveSubjects();
 
   res.status(201).json(newTask);
 };
@@ -81,6 +83,7 @@ const updateTask = (req, res) => {
   }
 
   task.completed = completed;
+  saveSubjects();
 
   res.json(task);
 };
@@ -106,6 +109,7 @@ const deleteTask = (req, res) => {
   }
 
   const deletedTask = subject.tasks.splice(taskIndex, 1);
+  saveSubjects();
 
   res.json({
     message: "Task deleted successfully",

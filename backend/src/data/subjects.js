@@ -1,15 +1,20 @@
-const subjects = [
-  {
-    id: 1,
-    name: "Mathematics",
-    tasks: [
-      {
-        id: 1,
-        title: "Practice algebra problems",
-        completed: false,
-      },
-    ],
-  },
-];
+const fs = require("fs");
+const path = require("path");
 
-module.exports = subjects;
+const subjectsFilePath = path.join(__dirname, "subjects.json");
+
+const loadSubjects = () => {
+  const fileData = fs.readFileSync(subjectsFilePath, "utf8");
+  return JSON.parse(fileData);
+};
+
+const saveSubjects = () => {
+  fs.writeFileSync(subjectsFilePath, JSON.stringify(subjects, null, 2));
+};
+
+const subjects = loadSubjects();
+
+module.exports = {
+  subjects,
+  saveSubjects,
+};
